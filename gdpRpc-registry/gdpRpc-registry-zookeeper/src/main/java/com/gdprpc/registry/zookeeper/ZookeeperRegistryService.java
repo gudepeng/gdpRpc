@@ -22,7 +22,6 @@ public class ZookeeperRegistryService implements RegistryService {
 
     private final static String ZKPARENTPATH = "/gdprpc/";
     private CuratorFramework client;
-    private String addressNode = "127.0.0.1:8099";
 
     @Override
     public void connentToRegistryService() {
@@ -35,7 +34,7 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public void register(String serverName) {
         try {
-            if (client.checkExists().forPath(ZKPARENTPATH + serverName + "/address") == null) {
+            if (client.checkExists().forPath(ZKPARENTPATH + serverName + "/127.0.0.1:8099") == null) {
                 ServerInfo serverInfo = new ServerInfo();
                 serverInfo.setHost("127.0.0.1");
                 serverInfo.setPort(8099);
@@ -54,9 +53,7 @@ public class ZookeeperRegistryService implements RegistryService {
             serverNode = new ArrayList<ServerInfo>();
             List<String> strings = client.getChildren().forPath(ZKPARENTPATH + serverName);
             for(String child:strings){
-                byte[]  addressNodes = client.getData().forPath(ZKPARENTPATH + serverName + "/"+child);
-                ServerInfo serverinfo = SerializationUtil.deserialize(addressNodes,ServerInfo.class);
-                serverNode.add(serverinfo);
+                serverNode.add(getDate(ZKPARENTPATH + serverName + "/"+child));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +63,27 @@ public class ZookeeperRegistryService implements RegistryService {
             return serverNode.get(0);
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public ServerInfo getDate(String zookNode) {
+        byte[]  addressNodes = new byte[0];
+        try {
+            addressNodes = client.getData().forPath(zookNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return SerializationUtil.deserialize(addressNodes,ServerInfo.class);
+    }
+
+    @Override
+    public void setDate(String zookNode, ServerInfo serverInfo) {
+        try {
+            client.setData().forPath(zookNode,SerializationUtil.serialize(serverInfo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 

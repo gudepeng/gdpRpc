@@ -9,7 +9,7 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
     /**
      * 负载的值
      */
-    private Integer balance;
+    private int balance;
     /**
      * 服务端ip地址
      */

@@ -28,4 +28,17 @@ public interface RegistryService {
      * @return 服务地址
      */
     public ServerInfo discover(String serverName);
+
+    /***
+     * 获取节点数据
+     * @param zookNode 节点路径
+     */
+    public ServerInfo getDate(String zookNode);
+
+    /***
+     * 设置节点数据
+     * @param zookNode 节点路径
+     * @param  serverinfo 设置的值
+     */
+    public void setDate(String zookNode,ServerInfo serverinfo);
 }
