@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc.iml" filepath="$PROJECT_DIR$/gdpRpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-common/gdpRpc-common.iml" filepath="$PROJECT_DIR$/gdpRpc-common/gdpRpc-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry.iml" filepath="$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry-api/gdpRpc-registry-api.iml" filepath="$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry-api/gdpRpc-registry-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry-zookeeper/gdpRpc-registry-zookeeper.iml" filepath="$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry-zookeeper/gdpRpc-registry-zookeeper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-client/gdpRpc-rpc-client.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-client/gdpRpc-rpc-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-server/gdpRpc-rpc-server.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-server/gdpRpc-rpc-server.iml" />
+    </modules>
+  </component>
+</project>
