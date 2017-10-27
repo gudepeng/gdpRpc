@@ -10,8 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>gdpRpc-registry</module>
-        <module>gdpRpc-registry</module>
-        <module>gdpRpc-registry</module>
         <module>gdpRpc-rpc</module>
         <module>gdpRpc-common</module>
     </modules>
