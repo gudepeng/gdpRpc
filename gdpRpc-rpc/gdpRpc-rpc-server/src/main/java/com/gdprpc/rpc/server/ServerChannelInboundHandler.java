@@ -2,21 +2,27 @@ package com.gdprpc.rpc.server;
 
 import com.gdprpc.common.bean.RpcRequest;
 import com.gdprpc.common.bean.RpcResponse;
-import com.gdprpc.registry.zookeeper.BalanceUpdateProvider.BalanceUpdateProvider;
-import com.gdprpc.registry.zookeeper.ZookeeperRegistryService;
+import com.gdprpc.registry.zookeeper.balanceupdateprovider.BalanceUpdateProvider;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.lang.reflect.Method;
+
 /**
- * Created by 我是金角大王 on 2017-10-27.
+ * @author 我是金角大王 on 2017-10-27.
  */
 public class ServerChannelInboundHandler extends SimpleChannelInboundHandler<RpcRequest> {
+    /**
+     * 注册的服务
+     */
+    private Object serviceProvider;
     private BalanceUpdateProvider balanceupdateprovider;
     private final  Integer BALANCE_STEP = 1;
 
-    public ServerChannelInboundHandler(BalanceUpdateProvider balanceupdateprovider) {
+    public ServerChannelInboundHandler(Object serviceProvider,BalanceUpdateProvider balanceupdateprovider) {
         super();
+        this.serviceProvider = serviceProvider;
         this.balanceupdateprovider = balanceupdateprovider;
     }
 
@@ -24,12 +30,12 @@ public class ServerChannelInboundHandler extends SimpleChannelInboundHandler<Rpc
     public void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + "客戶端消息 :" + request.getInterfaceName());
-        // 收到消息直接打印输出
+        Method method = serviceProvider.getClass().getMethod(request.getMethodName(),request.getParameterTypes() );
+        //执行方法
+        Object returnValue=method.invoke(serviceProvider , request.getParameters());
         RpcResponse response = new RpcResponse();
-        response.setResult("服务端成功执行");
-        // 返回客户端消息 - 我已经接收到了你的消息
+        response.setResult(returnValue);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-        ;
     }
 
     @Override

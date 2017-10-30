@@ -14,18 +14,19 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * Created by 我是金角大王 on 2017-10-25.
+ * @author 我是金角大王 on 2017-10-25.
  */
 public class NettyClient {
 
     private String host;
     private int port;
-    public NettyClient(String host,int port){
+
+    public NettyClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    public RpcResponse getServerMessage(RpcRequest request){
+    public RpcResponse getServerMessage(RpcRequest request) {
         final ClientChannelInboundHandler clientchannelinboundhandler = new ClientChannelInboundHandler();
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -37,7 +38,7 @@ public class NettyClient {
                 @Override
                 public void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline()
-                            .addLast(new RpcEncoder(RpcRequest.class)) // 编码 RPC 请求
+                            .addLast(new RpcEncoder(RpcRequest.class))
                             .addLast(new RpcDecoder(RpcResponse.class))
                             .addLast(clientchannelinboundhandler);
                 }

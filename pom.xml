@@ -12,6 +12,9 @@
         <module>gdpRpc-registry</module>
         <module>gdpRpc-rpc</module>
         <module>gdpRpc-common</module>
+        <module>gdpRpc-sample-client</module>
+        <module>gdpRpc-sample-server</module>
+        <module>gdp-sample</module>
     </modules>
 
     <properties>
@@ -60,6 +63,21 @@
             <dependency>
                 <groupId>gdp</groupId>
                 <artifactId>gdpRpc-registry-zookeeper</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>gdp</groupId>
+                <artifactId>gdpRpc-sample-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>gdp</groupId>
+                <artifactId>gdpRpc-rpc-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>gdp</groupId>
+                <artifactId>gdpRpc-rpc-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- ### zookeeper dependency: begin -->

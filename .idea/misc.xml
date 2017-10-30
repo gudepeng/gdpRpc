@@ -11,6 +11,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/gdp-sample/gdpRpc-sample/pom.xml" />
         <option value="$PROJECT_DIR$/gdpRpc-registry/pom.xml" />
       </set>
     </option>

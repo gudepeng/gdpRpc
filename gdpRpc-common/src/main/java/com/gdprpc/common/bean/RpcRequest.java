@@ -1,7 +1,7 @@
 package com.gdprpc.common.bean;
 
 /**
- * Created by 我是金角大王 on 2017-10-25.
+ * @author 我是金角大王 on 2017-10-25.
  */
 public class RpcRequest {
     private String interfaceName;

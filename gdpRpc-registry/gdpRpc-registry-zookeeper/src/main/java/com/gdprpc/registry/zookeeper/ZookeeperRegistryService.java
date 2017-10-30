@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by 我是金角大王 on 2017-10-23.
+ * @author 我是金角大王 on 2017-10-23.
  */
 public class ZookeeperRegistryService implements RegistryService {
 
@@ -24,21 +24,17 @@ public class ZookeeperRegistryService implements RegistryService {
     private CuratorFramework client;
 
     @Override
-    public void connentToRegistryService() {
-        String zookeeperConnectionString = "192.168.99.100:32773";
+    public void connentToRegistryService(String zookeeperPath) {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-        client = CuratorFrameworkFactory.newClient(zookeeperConnectionString, retryPolicy);
+        client = CuratorFrameworkFactory.newClient(zookeeperPath, retryPolicy);
         client.start();
     }
 
     @Override
-    public void register(String serverName) {
+    public void register(ServerInfo serverInfo) {
         try {
-            if (client.checkExists().forPath(ZKPARENTPATH + serverName + "/127.0.0.1:8099") == null) {
-                ServerInfo serverInfo = new ServerInfo();
-                serverInfo.setHost("127.0.0.1");
-                serverInfo.setPort(8099);
-                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ZKPARENTPATH + serverName + "/127.0.0.1:8099", SerializationUtil.serialize(serverInfo));
+            if (client.checkExists().forPath(ZKPARENTPATH + serverInfo.getZKPath()) == null) {
+                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ZKPARENTPATH + serverInfo.getZKPath(), SerializationUtil.serialize(serverInfo));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +49,7 @@ public class ZookeeperRegistryService implements RegistryService {
             serverNode = new ArrayList<ServerInfo>();
             List<String> strings = client.getChildren().forPath(ZKPARENTPATH + serverName);
             for(String child:strings){
-                serverNode.add(getDate(ZKPARENTPATH + serverName + "/"+child));
+                serverNode.add(getDate(serverName + "/"+child));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +66,8 @@ public class ZookeeperRegistryService implements RegistryService {
     public ServerInfo getDate(String zookNode) {
         byte[]  addressNodes = new byte[0];
         try {
-            addressNodes = client.getData().forPath(zookNode);
+            System.out.println(ZKPARENTPATH+zookNode);
+            addressNodes = client.getData().forPath(ZKPARENTPATH+zookNode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +77,7 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public void setDate(String zookNode, ServerInfo serverInfo) {
         try {
-            client.setData().forPath(zookNode,SerializationUtil.serialize(serverInfo));
+            client.setData().forPath(ZKPARENTPATH+zookNode,SerializationUtil.serialize(serverInfo));
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();

@@ -27,9 +27,13 @@
         <module name="gdpRpc-registry-zookeeper" />
         <module name="gdpRpc-rpc-client" />
         <module name="gdpRpc-rpc-server" />
+        <module name="gdpRpc-sample-api" />
+        <module name="gdpRpc-sample-client" />
+        <module name="gdpRpc-sample-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="gdp-sample" target="1.8" />
       <module name="gdpRpc" target="1.8" />
       <module name="gdpRpc-common" target="1.8" />
       <module name="gdpRpc-registry" target="1.8" />
@@ -38,7 +42,10 @@
       <module name="gdpRpc-rpc" target="1.8" />
       <module name="gdpRpc-rpc-client" target="1.8" />
       <module name="gdpRpc-rpc-server" target="1.8" />
+      <module name="gdpRpc-sample" target="1.8" />
+      <module name="gdpRpc-sample-api" target="1.8" />
       <module name="gdpRpc-sample-client" target="1.8" />
+      <module name="gdpRpc-sample-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

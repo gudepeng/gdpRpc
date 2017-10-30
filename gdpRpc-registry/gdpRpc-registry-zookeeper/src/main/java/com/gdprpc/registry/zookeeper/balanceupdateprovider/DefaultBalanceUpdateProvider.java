@@ -1,11 +1,10 @@
-package com.gdprpc.registry.zookeeper.BalanceUpdateProvider;
+package com.gdprpc.registry.zookeeper.balanceupdateprovider;
 
 import com.gdprpc.common.bean.ServerInfo;
 import com.gdprpc.registry.RegistryService;
-import com.gdprpc.registry.zookeeper.ZookeeperRegistryService;
 
 /**
- * Created by 我是金角大王 on 2017-10-27.
+ * @author 我是金角大王 on 2017-10-27.
  */
 public class DefaultBalanceUpdateProvider implements BalanceUpdateProvider{
     private RegistryService registryservice;

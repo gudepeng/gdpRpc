@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/gdp-sample/gdp-sample.iml" filepath="$PROJECT_DIR$/gdp-sample/gdp-sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdpRpc.iml" filepath="$PROJECT_DIR$/gdpRpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdpRpc-common/gdpRpc-common.iml" filepath="$PROJECT_DIR$/gdpRpc-common/gdpRpc-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry.iml" filepath="$PROJECT_DIR$/gdpRpc-registry/gdpRpc-registry.iml" />
@@ -10,6 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-client/gdpRpc-rpc-client.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-client/gdpRpc-rpc-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-server/gdpRpc-rpc-server.iml" filepath="$PROJECT_DIR$/gdpRpc-rpc/gdpRpc-rpc-server/gdpRpc-rpc-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdp-sample/gdpRpc-sample-api/gdpRpc-sample-api.iml" filepath="$PROJECT_DIR$/gdp-sample/gdpRpc-sample-api/gdpRpc-sample-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdp-sample/gdpRpc-sample-client/gdpRpc-sample-client.iml" filepath="$PROJECT_DIR$/gdp-sample/gdpRpc-sample-client/gdpRpc-sample-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gdp-sample/gdpRpc-sample-server/gdpRpc-sample-server.iml" filepath="$PROJECT_DIR$/gdp-sample/gdpRpc-sample-server/gdpRpc-sample-server.iml" />
     </modules>
   </component>
 </project>
