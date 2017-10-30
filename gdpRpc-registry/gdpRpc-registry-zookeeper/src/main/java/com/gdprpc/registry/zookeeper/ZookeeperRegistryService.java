@@ -66,7 +66,6 @@ public class ZookeeperRegistryService implements RegistryService {
     public ServerInfo getDate(String zookNode) {
         byte[]  addressNodes = new byte[0];
         try {
-            System.out.println(ZKPARENTPATH+zookNode);
             addressNodes = client.getData().forPath(ZKPARENTPATH+zookNode);
         } catch (Exception e) {
             e.printStackTrace();
