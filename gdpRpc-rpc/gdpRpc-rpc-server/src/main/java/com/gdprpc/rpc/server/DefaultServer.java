@@ -44,6 +44,7 @@ public class DefaultServer implements GServer {
     @Override
     public DefaultServer register() {
         this.serverInfo.setServicePath(serviceProvider.getClass().getInterfaces()[0].getName());
+        this.serverInfo.setBalance(1);
         return this;
     }
 

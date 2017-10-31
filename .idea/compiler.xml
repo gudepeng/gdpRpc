@@ -22,14 +22,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="gdpRpc-common" />
-        <module name="gdpRpc-registry-api" />
-        <module name="gdpRpc-registry-zookeeper" />
-        <module name="gdpRpc-rpc-client" />
-        <module name="gdpRpc-rpc-server" />
-        <module name="gdpRpc-sample-api" />
-        <module name="gdpRpc-sample-client" />
-        <module name="gdpRpc-sample-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

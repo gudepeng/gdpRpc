@@ -23,6 +23,7 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
      */
     private Integer port;
 
+
     public Integer getBalance() {
         return balance;
     }
