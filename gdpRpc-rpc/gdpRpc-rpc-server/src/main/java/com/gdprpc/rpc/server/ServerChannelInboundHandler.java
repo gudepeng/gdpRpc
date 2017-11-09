@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 我是金角大王 on 2017-10-27.
@@ -16,11 +17,11 @@ public class ServerChannelInboundHandler extends SimpleChannelInboundHandler<Rpc
     /**
      * 注册的服务
      */
-    private Object serviceProvider;
+    private ConcurrentHashMap<String,Object> serviceProvider;
     private BalanceUpdateProvider balanceupdateprovider;
     private final  Integer BALANCE_STEP = 1;
 
-    public ServerChannelInboundHandler(Object serviceProvider,BalanceUpdateProvider balanceupdateprovider) {
+    public ServerChannelInboundHandler(ConcurrentHashMap serviceProvider,BalanceUpdateProvider balanceupdateprovider) {
         super();
         this.serviceProvider = serviceProvider;
         this.balanceupdateprovider = balanceupdateprovider;
@@ -30,9 +31,9 @@ public class ServerChannelInboundHandler extends SimpleChannelInboundHandler<Rpc
     public void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         // 收到消息直接打印输出
         System.out.println(ctx.channel().remoteAddress() + "客戶端消息 :" + request.getInterfaceName());
-        Method method = serviceProvider.getClass().getMethod(request.getMethodName(),request.getParameterTypes() );
+        Method method = serviceProvider.get(request.getInterfaceName()).getClass().getMethod(request.getMethodName(),request.getParameterTypes() );
         //执行方法
-        Object returnValue=method.invoke(serviceProvider , request.getParameters());
+        Object returnValue=method.invoke(serviceProvider.get(request.getInterfaceName()) , request.getParameters());
         RpcResponse response = new RpcResponse();
         response.setResult(returnValue);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);

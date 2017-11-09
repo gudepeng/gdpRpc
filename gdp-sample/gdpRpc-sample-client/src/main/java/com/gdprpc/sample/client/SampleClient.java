@@ -10,7 +10,7 @@ import com.gdprpc.sample.bean.User;
  * @author 我是金角大王 on 2017-10-29.
  */
 public class SampleClient {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         RegistryService registryService = new ZookeeperRegistryService();
         registryService.connentToRegistryService("192.168.99.100:32770");
         GProxy gproxy = new GProxy(registryService);

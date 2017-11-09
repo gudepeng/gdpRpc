@@ -29,7 +29,7 @@ public interface RegistryService {
      * @param serverName 服务名称
      * @return 服务信息
      */
-    ServerInfo discover(String serverName);
+    ServerInfo discover(String serverName) throws InterruptedException;
 
     /***
      * 获取节点数据

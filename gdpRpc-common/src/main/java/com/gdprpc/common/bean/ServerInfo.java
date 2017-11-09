@@ -64,4 +64,37 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
     public int compareTo(ServerInfo o) {
         return this.getBalance().compareTo(o.getBalance());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){return true;}
+        if (o == null || getClass() != o.getClass()){return false;}
+
+        ServerInfo that = (ServerInfo) o;
+
+        if (balance != null ? !balance.equals(that.balance) : that.balance != null){return false;}
+        if (servicePath != null ? !servicePath.equals(that.servicePath) : that.servicePath != null){return false;}
+        if (host != null ? !host.equals(that.host) : that.host != null){return false;}
+        return port != null ? port.equals(that.port) : that.port == null;
+
+    }
+    public boolean equalsOther(Object o) {
+        if (this == o){return true;}
+        if (o == null || getClass() != o.getClass()){return false;}
+
+        ServerInfo that = (ServerInfo) o;
+
+        if (servicePath != null ? !servicePath.equals(that.servicePath) : that.servicePath != null){return false;}
+        if (host != null ? !host.equals(that.host) : that.host != null){return false;}
+        return port != null ? port.equals(that.port) : that.port == null;
+
+    }
+    @Override
+    public int hashCode() {
+        int result = balance != null ? balance.hashCode() : 0;
+        result = 31 * result + (servicePath != null ? servicePath.hashCode() : 0);
+        result = 31 * result + (host != null ? host.hashCode() : 0);
+        result = 31 * result + (port != null ? port.hashCode() : 0);
+        return result;
+    }
 }
