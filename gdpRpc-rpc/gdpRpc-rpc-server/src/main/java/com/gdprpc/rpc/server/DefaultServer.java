@@ -12,13 +12,22 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 我是金角大王 on 2017-10-22.
  */
 public class DefaultServer implements GServer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServer.class);
+
     /**
      * 注册中心对象
      */
@@ -45,7 +54,11 @@ public class DefaultServer implements GServer {
 
     @Override
     public DefaultServer register() {
-        this.serverInfo.setServicePath(serviceProviderMap.getClass().getInterfaces()[0].getName());
+        List<String> list = new ArrayList<>();
+        serviceProviderMap.forEach((k,v) ->{
+            list.add(v.getClass().getInterfaces()[0].getName());
+        });
+        this.serverInfo.setServicePath(list);
         this.serverInfo.setBalance(1);
         return this;
     }
@@ -58,19 +71,23 @@ public class DefaultServer implements GServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup);
             b.channel(NioServerSocketChannel.class);
+            // 保持连接数
+            b.option(ChannelOption.SO_BACKLOG, 128);
+            // 保持连接
+            b.childOption(ChannelOption.SO_KEEPALIVE, true);
             b.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline()
+                            .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
                             .addLast(new RpcDecoder(RpcRequest.class))
                             .addLast(new RpcEncoder(RpcResponse.class))
                             .addLast(new ServerChannelInboundHandler(serviceProviderMap,new DefaultBalanceUpdateProvider(registryService, serverInfo.getZKPath())));
                 }
             });
-            b.option(ChannelOption.SO_BACKLOG, 1);
-            b.childOption(ChannelOption.SO_KEEPALIVE, true);
             // 服务器绑定端口监听
             ChannelFuture f = b.bind(serverInfo.getPort()).sync();
+            LOGGER.debug("Server started on port {}", serverInfo.getPort());
             registryService.register(serverInfo);
             // 监听服务器关闭监听
             f.channel().closeFuture().sync();

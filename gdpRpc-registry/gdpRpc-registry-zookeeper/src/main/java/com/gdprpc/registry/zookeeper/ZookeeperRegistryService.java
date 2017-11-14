@@ -15,6 +15,7 @@ import org.apache.zookeeper.CreateMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,7 +32,7 @@ public class ZookeeperRegistryService implements RegistryService {
     /**
      * 服务集合
      */
-    private ConcurrentHashMap<String, List<ServerInfo>> serverInfoMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, List<String>> serverInfoMap = new ConcurrentHashMap<>();
 
     @Override
     public void connentToRegistryService(String zookeeperPath) {
@@ -43,8 +44,10 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public void register(ServerInfo serverInfo) {
         try {
-            if (client.checkExists().forPath(ZKPARENTPATH + serverInfo.getZKPath()) == null) {
-                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ZKPARENTPATH + serverInfo.getZKPath(), SerializationUtil.serialize(serverInfo));
+            for(String path:serverInfo.getServicePath()){
+                if (client.checkExists().forPath(ZKPARENTPATH + path+serverInfo.getZKPath()) == null) {
+                    client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ZKPARENTPATH + path+serverInfo.getZKPath());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,17 +56,13 @@ public class ZookeeperRegistryService implements RegistryService {
     }
 
     @Override
-    public ServerInfo discover(final String serverName) throws InterruptedException {
-        List<ServerInfo> listServverInfo = serverInfoMap.get(serverName);
+    public Map<String,Object> discover(final String serverName) throws InterruptedException {
+        List<String> listServverInfo = serverInfoMap.get(serverName);
         if(listServverInfo == null){
             PathChildrenCache pathChildrenCache = pathChildrenCacheMap.get(serverName);
             if (pathChildrenCache == null) {
                 try {
-                    listServverInfo = new ArrayList<>();
-                    List<String> strings = client.getChildren().forPath(ZKPARENTPATH + serverName);
-                    for (String child : strings) {
-                        listServverInfo.add(getDate(serverName + "/" + child));
-                    }
+                    listServverInfo = client.getChildren().forPath(ZKPARENTPATH + serverName);
                     serverInfoMap.put(serverName,listServverInfo);
 
                     PathChildrenCache newPathChildrenCache = new PathChildrenCache(client, ZKPARENTPATH + serverName, true);
@@ -76,33 +75,20 @@ public class ZookeeperRegistryService implements RegistryService {
                                 switch (event.getType()) {
                                     case CHILD_ADDED: {
                                         if (serverInfoMap.get(serverName) == null) {
-                                            ServerInfo serverInfo = SerializationUtil.deserialize(event.getData().getData(), ServerInfo.class);
-                                            List<ServerInfo> list = new ArrayList<>();
-                                            list.add(serverInfo);
+                                            List<String> list = new ArrayList<>();
+                                            list.add(event.getData().getPath());
                                             serverInfoMap.put(serverName, list);
                                         } else {
-                                            ServerInfo serverInfo = SerializationUtil.deserialize(event.getData().getData(), ServerInfo.class);
-                                            List<ServerInfo> list = serverInfoMap.get(serverName);
-                                            list.add(serverInfo);
+                                            List<String> list = serverInfoMap.get(serverName);
+                                            list.add(event.getData().getPath());
                                         }
                                         break;
                                     }
                                     case CHILD_REMOVED: {
-                                        ServerInfo serverInfo = SerializationUtil.deserialize(event.getData().getData(), ServerInfo.class);
-                                        List<ServerInfo> list = serverInfoMap.get(serverName);
-                                        for (ServerInfo si : list) {
-                                            if (si.equals(serverInfo)) {
+                                        List<String> list = serverInfoMap.get(serverName);
+                                        for (String si : list) {
+                                            if (si.equals(event.getData().getPath())) {
                                                 list.remove(si);
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    case CHILD_UPDATED: {
-                                        ServerInfo serverInfo = SerializationUtil.deserialize(event.getData().getData(), ServerInfo.class);
-                                        List<ServerInfo> list = serverInfoMap.get(serverName);
-                                        for (int i = 0; i < list.size(); i++) {
-                                            if (list.get(i).equalsOther(serverInfo)) {
-                                                list.set(i, serverInfo);
                                             }
                                         }
                                         break;
@@ -121,8 +107,10 @@ public class ZookeeperRegistryService implements RegistryService {
             }
         }
         if (listServverInfo!=null&&listServverInfo.size() > 0) {
-            Collections.sort(listServverInfo);
-            return listServverInfo.get(0);
+            Map<String,Object> map = new ConcurrentHashMap<>();
+            map.put("host",listServverInfo.get(0).split(":")[0]);
+            map.put("prot",listServverInfo.get(0).split(":")[1]);
+            return map;
         } else {
             return null;
         }

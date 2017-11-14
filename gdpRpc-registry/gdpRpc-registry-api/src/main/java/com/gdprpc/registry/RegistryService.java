@@ -2,6 +2,8 @@ package com.gdprpc.registry;
 
 import com.gdprpc.common.bean.ServerInfo;
 
+import java.util.Map;
+
 /**
  * @author 我是金角大王 on 2017-10-25.
  */
@@ -19,7 +21,7 @@ public interface RegistryService {
     /***
      * 注册服务
      *
-     * @param serverName 服务名称
+     * @param serverInfo 服务对象类
      */
     void register(ServerInfo serverInfo);
 
@@ -29,7 +31,7 @@ public interface RegistryService {
      * @param serverName 服务名称
      * @return 服务信息
      */
-    ServerInfo discover(String serverName) throws InterruptedException;
+    Map<String,Object> discover(String serverName) throws InterruptedException;
 
     /***
      * 获取节点数据

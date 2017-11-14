@@ -1,6 +1,7 @@
 package com.gdprpc.common.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author 我是金角大王 on 2017-10-27.
@@ -13,7 +14,7 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
     /**
      * 服务路径
      */
-    private String servicePath;
+    private List<String> servicePath;
     /**
      * 服务端ip地址
      */
@@ -32,11 +33,11 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
         this.balance = balance;
     }
 
-    public String getServicePath() {
+    public List<String> getServicePath() {
         return servicePath;
     }
 
-    public void setServicePath(String servicePath) {
+    public void setServicePath(List<String> servicePath) {
         this.servicePath = servicePath;
     }
 
@@ -57,7 +58,7 @@ public class ServerInfo implements Serializable, Comparable<ServerInfo> {
     }
 
     public String getZKPath(){
-        return this.servicePath+"/"+this.host+":"+this.port;
+        return "/"+this.host+":"+this.port;
     }
 
     @Override

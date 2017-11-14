@@ -12,9 +12,7 @@
         <module>gdpRpc-registry</module>
         <module>gdpRpc-rpc</module>
         <module>gdpRpc-common</module>
-        <module>gdpRpc-sample-client</module>
-        <module>gdpRpc-sample-server</module>
-        <module>gdp-sample</module>
+        <module>gdpRpc-sample</module>
     </modules>
 
     <properties>

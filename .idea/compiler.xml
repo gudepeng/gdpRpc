@@ -33,7 +33,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="gdp-sample" target="1.8" />
       <module name="gdpRpc" target="1.8" />
       <module name="gdpRpc-common" target="1.8" />
       <module name="gdpRpc-registry" target="1.8" />
