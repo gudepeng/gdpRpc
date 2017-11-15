@@ -42,6 +42,7 @@ public class ServerChannelInboundHandler extends SimpleChannelInboundHandler<Rpc
                     //执行方法
                     Object returnValue=method.invoke(serviceProvider.get(request.getInterfaceName()) , request.getParameters());
                     RpcResponse response = new RpcResponse();
+                    response.setId(request.getId());
                     response.setResult(returnValue);
                     ctx.writeAndFlush(response).addListener(new ChannelFutureListener() {
                         @Override

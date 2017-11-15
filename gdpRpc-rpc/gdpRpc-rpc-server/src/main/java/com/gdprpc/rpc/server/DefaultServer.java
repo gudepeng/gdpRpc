@@ -73,13 +73,14 @@ public class DefaultServer implements GServer {
             b.channel(NioServerSocketChannel.class);
             // 保持连接数
             b.option(ChannelOption.SO_BACKLOG, 128);
+            // 有数据立即发送
+            b.option(ChannelOption.TCP_NODELAY, true);
             // 保持连接
             b.childOption(ChannelOption.SO_KEEPALIVE, true);
             b.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline()
-                            .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
                             .addLast(new RpcDecoder(RpcRequest.class))
                             .addLast(new RpcEncoder(RpcResponse.class))
                             .addLast(new ServerChannelInboundHandler(serviceProviderMap,new DefaultBalanceUpdateProvider(registryService, serverInfo.getZKPath())));
@@ -91,7 +92,6 @@ public class DefaultServer implements GServer {
             registryService.register(serverInfo);
             // 监听服务器关闭监听
             f.channel().closeFuture().sync();
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

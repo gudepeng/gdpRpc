@@ -72,14 +72,11 @@ public class NettyClient {
                                 .addLast(new RpcDecoder(RpcResponse.class))
                                 .addLast(new ClientChannelInboundHandler());
                     }
-
                 });
-                System.out.println(111111);
                 // 连接服务端
                 ChannelFuture ch = b.connect(host, port).addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        System.out.println(222222);
                         ClientChannelInboundHandler handler = channelFuture.channel().pipeline().get(ClientChannelInboundHandler.class);
                         InetSocketAddress remoteAddress = (InetSocketAddress) handler.getChannel().remoteAddress();
                         connectedServerNodes.put(remoteAddress.getAddress() + ":" + remoteAddress.getPort(), handler);
